@@ -3,17 +3,17 @@ package com.example.kotlin
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,162 +22,201 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kotlin.ui.theme.KotlinTheme
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            ProfileBody()
+            KotlinTheme {
+                Surface(color = Color.Black, modifier = Modifier.fillMaxSize()) {
+                    InstagramProfileScreen()
+                }
+            }
         }
     }
 }
 
 @Composable
-fun ProfileBody() {
-    Scaffold { padding ->
+fun InstagramProfileScreen() {
+    Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+        // Top Bar
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+
+
+        ) {
+            Text(
+                text = "sushantshah143",
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_more_horiz_24), // Placeholder for settings
+                contentDescription = "Settings",
+                tint = Color.White,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        // Profile Section
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.profile_pic),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .size(90.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ProfileStat(number = "4", label = "posts")
+                ProfileStat(number = "215K", label = "followers")
+                ProfileStat(number = "10", label = "following")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Bio Section
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .background(Color.White)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
         ) {
-            // Top bar
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.baseline_arrow_back_ios_new_24),
-                    contentDescription = null
-                )
-                Text(
-                    text = "username",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
-                Icon(
-                    painter = painterResource(R.drawable.baseline_more_horiz_24),
-                    contentDescription = null
-                )
+            Text("Sūshāñt Shāh", color = Color.White, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text("🙏\"HAR\"❤️\n🙏\"HAR\"❤️\n🙏\"MAHADEV\"❤️‍", color = Color.White)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("sushantshah143", color = Color.White, fontSize = 14.sp)
             }
+        }
 
-            // Profile picture and stats
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_launcher_background),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, Color.LightGray, CircleShape),
-                    contentScale = ContentScale.Crop
-                )
+        Spacer(modifier = Modifier.height(16.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth(0.7f)
-                ) {
-                    ProfileStat("0", "Posts")
-                    ProfileStat("0", "Followers")
-                    ProfileStat("0", "Following")
-                }
+        // Action Buttons
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            ProfileButton(modifier = Modifier.weight(1f), text = "Edit Profile")
+            ProfileButton(modifier = Modifier.weight(1f), text = "View archive")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Story Highlights
+        val stories = listOf(
+            "Mehh ❤️" to R.drawable.ic_launcher_background, // Placeholder
+            "Highlights" to R.drawable.ic_launcher_background, // Placeholder
+            "Highlights" to R.drawable.profile_pic,
+            "Story" to R.drawable.ic_launcher_background, // Placeholder for story_highlight.jpg
+            "Travel" to R.drawable.ic_launcher_background // Placeholder for travel_highlight.jpg
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(stories) { (name, imageRes) ->
+                StoryHighlightItem(imageRes = imageRes, text = name)
             }
-
-            // Username and bio
-            Column(
-                modifier = Modifier.padding(start = 20.dp, top = 10.dp)
-            ) {
-                Text("Username", fontWeight = FontWeight.Bold)
-                Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                Text("#hashtag", color = Color.Blue)
-                Text("Link goes here", color = Color(0xFF00376B))
-                Text("Followed by username and username", fontSize = 12.sp, color = Color.Gray)
-            }
-
-            // Buttons
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0095F6)),
-                    modifier = Modifier.weight(1f).padding(4.dp)
-                ) { Text("Follow", color = Color.White) }
-
-                Button(
-                    onClick = { },
-                    modifier = Modifier.weight(1f).padding(4.dp)
-                ) { Text("Message") }
-
-                Button(
-                    onClick = { },
-                    modifier = Modifier.weight(1f).padding(4.dp)
-                ) { Text("Email") }
-            }
-
-            // Story highlights
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                repeat(5) { index ->
-                    StoryHighlight("Story ${index + 1}")
-                }
+            item {
+                NewStoryItem()
             }
         }
     }
 }
 
 @Composable
-fun ProfileStat(count: String, label: String) {
+fun ProfileStat(number: String, label: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = count, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-        Text(text = label, fontSize = 14.sp)
+        Text(text = number, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        Text(text = label, color = Color.White, fontSize = 14.sp)
     }
 }
 
 @Composable
-fun StoryHighlight(name: String) {
+fun ProfileButton(modifier: Modifier = Modifier, text: String) {
+    Button(
+        onClick = { },
+        modifier = modifier.height(35.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF333333)),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Text(text = text, color = Color.White, fontWeight = FontWeight.SemiBold)
+    }
+}
+
+@Composable
+fun StoryHighlightItem(imageRes: Int, text: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
-            contentDescription = null,
+            painter = painterResource(id = imageRes),
+            contentDescription = text,
             modifier = Modifier
                 .size(70.dp)
                 .clip(CircleShape)
-                .border(1.dp, Color.LightGray, CircleShape),
-            contentScale = ContentScale.Crop
+                .border(1.dp, Color.DarkGray, CircleShape),
+            contentScale = ContentScale.Crop,
         )
-        Text(
-            text = name,
-            fontSize = 12.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 4.dp)
-        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = text, color = Color.White, fontSize = 12.sp)
     }
 }
 
-@Preview(showBackground = true)
+@Composable
+fun NewStoryItem() {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier = Modifier
+                .size(70.dp)
+                .clip(CircleShape)
+                .border(1.dp, Color.DarkGray, CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add new story",
+                tint = Color.White,
+                modifier = Modifier.size(30.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = "New", color = Color.White, fontSize = 12.sp)
+    }
+}
+
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 fun PreviewProfile() {
-    ProfileBody()
+    KotlinTheme {
+        InstagramProfileScreen()
+    }
 }
